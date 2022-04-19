@@ -1,4 +1,4 @@
-import json, os
+import json, os, sys
 from my_summarizers import ExtractiveSummarizer_MemSum_Final
 
 import nltk
@@ -14,11 +14,17 @@ memsum_model = ExtractiveSummarizer_MemSum_Final(
              )
 
 load_path = "../paraphrase/test_corpora/archive/"
+save_path = "../paraphrase/test_corpora/extracted_archive/"
 list_of_files = sorted(os.listdir(load_path))
 
-for file in list_of_files:
-    if file.endswith(".txt"):
-        text = open(load_path+file)
+file_path = sys.argv[1]
+file_name = file_path.split("/")[-1]
+print(file_path, file_name)
+
+if file_name.endswith(".txt"):
+    full_file = load_path+file_name
+    if os.stat(full_file).st_size != 0:
+        text = open(full_file)
         # print(text.read())
         list_of_sentences = sent_tokenize(text.read())
         list_of_sentences = [x.replace("\n"," ") for x in list_of_sentences]
@@ -29,7 +35,7 @@ for file in list_of_files:
                                                 return_sentence_position= False )[0]
         print(extracted_summary)
         text.close()
-        savefile = open(load_path+"extracted_"+file, "w")
+        savefile = open(save_path+"extracted_"+file_name, "w")
         savefile.write("\n".join(item for item in extracted_summary))
         savefile.close()
-        break
+    

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "script to run paraphrase tasks"
+echo "script to run memsum tasks"
 
 if ls lsf.* 1> /dev/null 2>&1
 then
@@ -52,8 +52,7 @@ do
    echo $count
    if [ "$count" -gt 0 ]
    then
-        # bsub "${args[@]}" python annots/splitter.py $eachfile
-        echo "here"
+        bsub "${args[@]}" -oo memsum_$count.out python memsum_extractor.py $eachfile
         # break
    fi
    if [ "$count" -eq 2000 ]
@@ -63,5 +62,5 @@ do
 done
 
 
-bsub "${args[@]}" -oo memsum.out python memsum_extractor.py 
+# bsub "${args[@]}" -oo memsum.out python memsum_extractor.py 
 
