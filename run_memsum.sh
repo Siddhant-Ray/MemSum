@@ -41,6 +41,27 @@ while [ ! -z "$1" ]; do
     shift
 done
 
+path=../paraphrase/test_corpora/archive
+
+count=0
+
+for eachfile in "$path"/*.txt
+do
+   echo $eachfile
+   ((count++))
+   echo $count
+   if [ "$count" -gt 0 ]
+   then
+        # bsub "${args[@]}" python annots/splitter.py $eachfile
+        echo "here"
+        # break
+   fi
+   if [ "$count" -eq 2000 ]
+   then
+       break
+   fi
+done
+
 
 bsub "${args[@]}" -oo memsum.out python memsum_extractor.py 
 
